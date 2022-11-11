@@ -6,6 +6,7 @@ const Projects = require('../projects/projects-model')
 
 const router = express.Router();
 
+
 router.get('/', (req, res) => {
     Actions.get()
     .then(result => {
@@ -23,7 +24,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res) => {
-    Actions.insert({description: req.body.description})
+    Actions.insert({description: req.body.description, notes: req.body.notes, project_id: 5, completed: false})
     .then(result => 
         res.send(result))
     .catch(err => 
@@ -31,18 +32,21 @@ router.post('/', (req, res) => {
 })
 
 
-router.put('/:id', (req, res) => {
+// router.put('/:id', (req, res) => {
 
-});
+// });
 
 router.delete('/:id', (req, res) => {
-
+    Actions.remove(req.params.id)
+    .then(result => {
+        Actions.get()
+        .then(resp => {
+            res.status(200).json(resp)
+        })
+    })
+    .catch(err => 
+        res.status(500).json({message: message.error}))
 });
-
-router.get('/:id/actions', (req, res) => {
-
-});
-
 
 
 module.exports = router
