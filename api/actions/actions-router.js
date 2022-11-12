@@ -4,6 +4,8 @@ const express = require('express')
 const Actions = require('./actions-model')
 const Projects = require('../projects/projects-model')
 
+const {validateActionId, validateAction} = require('./actions-middlware')
+
 const router = express.Router();
 
 
@@ -14,29 +16,29 @@ router.get('/', (req, res) => {
     .catch(err => res.send(err))
 });
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', validateActionId, (req, res, next) => {
     Actions.get(req.params.id)
         .then(result => {
+            console.log(result)
            if (!result) { 
             res.status(404).json('Not Found') 
         } else { res.status(200).json(result) 
-        }}).catch(err => res.send(err))
+        }}).catch(err => res.status(500).json({message: err.message, stack: err.stack}))
 });
 
-router.post('/', (req, res) => {
-    Actions.insert({description: req.body.description, notes: req.body.notes, project_id: 5, completed: false})
+router.post('/', validateAction, (req, res) => {
+    Actions.insert(req.body)
     .then(result => 
-        res.send(result))
+        res.status(200).json(result))
     .catch(err => 
-        res.send({message: err.message, stack: err.stack}))
-})
-
+        res.status(500).json({message: err.message, stack: err.stack}))
+});
 
 // router.put('/:id', (req, res) => {
-
+//     Actions.update(req.body)
 // });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateActionId, (req, res) => {
     Actions.remove(req.params.id)
     .then(result => {
         Actions.get()
