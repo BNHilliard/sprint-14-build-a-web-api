@@ -36,10 +36,10 @@ router.post('/', validateProject, (req, res) => {
 
 router.put('/:id', validateProjectId, validateProject, (req, res) => {
     Projects.update(req.params.id, req.body)
-    .then(resp =>  res.status(200).json(resp))
-    .catch(err => { res.status(500).json({message: err.message, stack: err.stack})
-    })
-})
+    .then(resp => 
+        res.status(200).json(resp))
+    .catch(err => res.status(500).json({message: err.message, stack: err.stack}))
+});
 
 
 router.delete('/:id', validateProjectId, (req, res) => {
