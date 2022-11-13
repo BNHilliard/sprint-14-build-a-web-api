@@ -1,5 +1,10 @@
 const Actions = require('./actions-model')
 
+function logger(req, res, next) {
+    console.log(req.method, req.originalUrl, req.timestamp)
+    next();
+    }
+
 function validateAction(req, res, next) {
     if (!req.body.notes || !req.body.description || !req.body.project_id) {
         res.status(400).json('notes, description, completed, and project ID are required');

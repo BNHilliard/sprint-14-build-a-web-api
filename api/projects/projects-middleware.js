@@ -1,6 +1,11 @@
 // add middlewares here related to projects
 const Projects = require('./projects-model')
 
+function logger(req, res, next) {
+    console.log(req.method, req.originalUrl, req.timestamp)
+    next();
+    }
+
 function validateProjectId(req, res, next) {
     Projects.get(req.params.id)
     .then(resp => {

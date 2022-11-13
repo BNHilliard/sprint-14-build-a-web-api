@@ -50,16 +50,20 @@ router.delete('/:id', validateProjectId, (req, res) => {
             res.status(200).json(resp)
           })
     })
-    .catch(err => 
-        res.status(500).json({message: message.error}))
+    .catch(err => {
+        res.status(500).json({message: err.message})
+    })
+        
 })
 
 
 
 router.get('/:id/actions', validateProjectId, (req, res) => {
     Projects.get(req.params.id)
-    .then(resp => {
-        res.status(200).json(resp.actions)
+    .then(project => {
+        res.status(200).json(project.actions)
+    }).catch(err => {
+        res.status(500).json({message: err.message})
     })
 })
 
