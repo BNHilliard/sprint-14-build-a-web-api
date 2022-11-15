@@ -42,6 +42,16 @@ router.put('/:id', validateProjectId, validateProject, (req, res) => {
 });
 
 
+router.get('/:id/actions', validateProjectId, (req, res) => {
+    Projects.get(req.params.id)
+    .then(project => {
+        res.status(200).json(project.actions)
+    }).catch(err => {
+        res.status(500).json({message: err.message})
+    })
+})
+
+
 router.delete('/:id', validateProjectId, (req, res) => {
     Projects.remove(req.params.id)
     .then(result => {
@@ -57,14 +67,5 @@ router.delete('/:id', validateProjectId, (req, res) => {
 })
 
 
-
-router.get('/:id/actions', validateProjectId, (req, res) => {
-    Projects.get(req.params.id)
-    .then(project => {
-        res.status(200).json(project.actions)
-    }).catch(err => {
-        res.status(500).json({message: err.message})
-    })
-})
 
 module.exports = router
