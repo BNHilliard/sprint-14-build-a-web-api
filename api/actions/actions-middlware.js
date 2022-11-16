@@ -6,7 +6,7 @@ function logger(req, res, next) {
     }
 
 function validateAction(req, res, next) {
-    if (!req.body.notes || !req.body.description || !req.body.project_id) {
+    if (!req.body.notes || !req.body.description || !req.body.project_id || req.body.completed == undefined) {
         res.status(400).json('notes, description, completed, and project ID are required');
     } else {
         next();

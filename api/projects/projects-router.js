@@ -43,9 +43,10 @@ router.put('/:id', validateProjectId, validateProject, (req, res) => {
 
 
 router.get('/:id/actions', validateProjectId, (req, res) => {
-    Projects.get(req.params.id)
+    Projects.getProjectActions(req.params.id)
     .then(project => {
-        res.status(200).json(project.actions)
+        console.log(project)
+        res.status(200).json(project)
     }).catch(err => {
         res.status(500).json({message: err.message})
     })
